@@ -15,21 +15,25 @@ const attachCookiesToResponse = ({ res, user, refreshToken }) => {
 
   const longerExp = 1000 * 60 * 60 * 24 * 30;
 
+  console.log(accessTokenJWT,refreshTokenJWT );
   res
   .cookie('accessToken', accessTokenJWT, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     signed: true,
     expires: new Date(Date.now() + oneDay),
-    sameSite: 'None'
+    sameSite : process.env.NODE_ENV === 'production' ? 'None': undefined,
   })
   .cookie('refreshToken', refreshTokenJWT, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     signed: true,
     expires: new Date(Date.now() + longerExp),
-    sameSite: 'None'
+    sameSite : process.env.NODE_ENV === 'production' ? 'None': undefined,
+
   });
+
+  console.log(res.signedCookies);
 };
 
 // const attachSingleCookieToResponse = ({ res, user }) => {
